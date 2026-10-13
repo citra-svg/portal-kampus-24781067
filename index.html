@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal Kampus · Politeknik Negeri Lampung</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="login-page" id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">PK</div>
+    <h1>Portal Kampus</h1>
+    <p class="subtitle">Politeknik Negeri Lampung · Sistem Akademik</p>
+
+    <div class="alert alert-error" id="loginError">Username atau password salah.</div>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input id="username" type="text" placeholder="Masukkan username" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Masukkan password">
+    </div>
+    <button class="btn" onclick="doLogin()">Masuk</button>
+
+    <div class="login-hint">
+      <strong>Akun demo:</strong><br>
+      Mahasiswa → <code>mahasiswa</code> / <code>12345</code><br>
+      Dosen → <code>dosen</code> / <code>12345</code><br>
+      Admin → <code>admin</code> / <code>admin123</code>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="logo-sm">PK</div>
+      <span>Portal Kampus</span>
+    </div>
+    <div class="topbar-user">
+      <div class="user-chip">
+        <div class="user-avatar" id="userInitial">M</div>
+        <span id="userName">Mahasiswa</span>
+        <span class="role-badge" id="userRole">mahasiswa</span>
+      </div>
+      <button class="btn btn-sm btn-secondary" onclick="logout()">Keluar</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Menu</h3>
+      <div id="navMenu"></div>
+    </aside>
+
+    <main class="content">
+      <div class="page" id="page-mhs-dashboard">
+        <div class="page-header">
+          <h2>Dashboard Mahasiswa</h2>
+          <p>Selamat datang di portal akademik</p>
+        </div>
+        <div class="stats">
+          <div class="stat-card"><div class="label">NIM</div><div class="value">2212345</div></div>
+          <div class="stat-card accent"><div class="label">IPK</div><div class="value">3.41</div></div>
+          <div class="stat-card success"><div class="label">SKS Lulus</div><div class="value">98</div></div>
+        </div>
+        <div class="card">
+          <h3>Pengumuman</h3>
+          <p style="color:var(--muted);font-size:14px">Ujian Akhir Semester dimulai 15 Desember 2026. Pastikan tidak ada tanggungan administrasi.</p>
+        </div>
+      </div>
+
+      <div class="page" id="page-mhs-nilai">
+        <div class="page-header"><h2>Nilai Saya</h2><p>Rekap nilai semester berjalan</p></div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Mata Kuliah</th><th>SKS</th><th>Nilai</th></tr></thead>
+            <tbody>
+              <tr><td>Keamanan Sistem Informasi</td><td>3</td><td><span class="grade-badge grade-A">A</span></td></tr>
+              <tr><td>Pemrograman Web</td><td>3</td><td><span class="grade-badge grade-B">B+</span></td></tr>
+              <tr><td>Basis Data</td><td>3</td><td><span class="grade-badge grade-A">A-</span></td></tr>
+              <tr><td>Jaringan Komputer</td><td>3</td><td><span class="grade-badge grade-B">B</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page" id="page-mhs-upload">
+        <div class="page-header"><h2>Unggah Tugas</h2><p>Kirim tugas Anda sebelum deadline</p></div>
+        <div class="card">
+          <div class="form-group">
+            <label>Mata Kuliah</label>
+            <select id="uploadMK">
+              <option>Keamanan Sistem Informasi</option>
+              <option>Pemrograman Web</option>
+              <option>Basis Data</option>
+            </select>
+          </div>
+          <div class="upload-zone" onclick="alert('Simulasi: file tugas diunggah.')">
+            <div class="icon">📁</div>
+            <p>Klik untuk memilih file tugas</p>
+            <p style="font-size:12px;margin-top:4px">PDF, DOC, ZIP · maks 5 MB</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-mhs-diskusi">
+        <div class="page-header"><h2>Forum Diskusi</h2><p>Diskusi kelas Keamanan Sistem Informasi</p></div>
+        <div class="card">
+          <div class="chat-box" id="chatBox"></div>
+          <div class="chat-input">
+            <input id="chatInput" placeholder="Tulis pesan diskusi..." onkeypress="if(event.key==='Enter') sendChat()">
+            <button class="btn" onclick="sendChat()">Kirim</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-dosen-dashboard">
+        <div class="page-header"><h2>Dashboard Dosen</h2><p>Kelola kelas dan nilai mahasiswa</p></div>
+        <div class="stats">
+          <div class="stat-card"><div class="label">Kelas Aktif</div><div class="value">3</div></div>
+          <div class="stat-card accent"><div class="label">Mahasiswa</div><div class="value">87</div></div>
+          <div class="stat-card success"><div class="label">Tugas Perlu Dinilai</div><div class="value">12</div></div>
+        </div>
+      </div>
+
+      <div class="page" id="page-dosen-nilai">
+        <div class="page-header"><h2>Input Nilai</h2><p>Beri nilai untuk mahasiswa</p></div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Nama</th><th>NIM</th><th>Nilai</th><th>Aksi</th></tr></thead>
+            <tbody>
+              <tr><td>Dina Ramadhani</td><td>2212301</td><td><input value="A" style="width:60px;padding:4px;border:1px solid #ddd;border-radius:6px"></td><td><button class="btn btn-sm">Simpan</button></td></tr>
+              <tr><td>Galih Pratama</td><td>2212302</td><td><input value="B+" style="width:60px;padding:4px;border:1px solid #ddd;border-radius:6px"></td><td><button class="btn btn-sm">Simpan</button></td></tr>
+              <tr><td>Sekar Ayuning</td><td>2212303</td><td><input value="A-" style="width:60px;padding:4px;border:1px solid #ddd;border-radius:6px"></td><td><button class="btn btn-sm">Simpan</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page" id="page-admin-dashboard">
+        <div class="page-header"><h2>Dashboard Admin</h2><p>Kelola akun dan sistem</p></div>
+        <div class="stats">
+          <div class="stat-card"><div class="label">Total User</div><div class="value">142</div></div>
+          <div class="stat-card accent"><div class="label">Mahasiswa</div><div class="value">128</div></div>
+          <div class="stat-card success"><div class="label">Dosen</div><div class="value">14</div></div>
+        </div>
+      </div>
+
+      <div class="page" id="page-admin-users">
+        <div class="page-header"><h2>Kelola Akun</h2><p>Daftar pengguna portal</p></div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Username</th><th>Nama</th><th>Role</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>mahasiswa</td><td>citra zainah</td><td><span class="role-badge role-mahasiswa">mahasiswa</span></td><td>✅ Aktif</td></tr>
+              <tr><td>dosen</td><td>Bpk. Budi Santoso</td><td><span class="role-badge role-dosen">dosen</span></td><td>✅ Aktif</td></tr>
+              <tr><td>admin</td><td>Admin Sistem</td><td><span class="role-badge role-admin">admin</span></td><td>✅ Aktif</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
